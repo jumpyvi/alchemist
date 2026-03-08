@@ -1,26 +1,31 @@
-# BootVi
+# Alchemist
 
 # Purpose
 
-Zirconium with virt/docker support and an LTS kernel
+Minimalist AlmaLinux bootable container with ublue-like utilies
 
 
 ## Workstation
 
-☁️ Based on zirconium
+☁️ Based on almalinux:10-kitten
 
 A slight modification to the base image matching my preference and requirements
 
 ### Changes:
-- Default kernel replaced by Kwizart's LTS kernel
-- Full virtualization added
-- Full docker-ce added
-- Ptyxis instead of foot
-- NmConnectionEditor for advanced network management
+- Up to date and minimal gnome-shell
+- Virtualization support
+- Uupd
+- Necessary drivers, codecs and utils
+- Brew, flathub and gnome-nightly ootb
 
 
 # How to rebase
 
 ```bash
-sudo bootc switch --enforce-container-sigpolicy "ghcr.io/jumpyvi/bootvi:latest"
+sudo bootc switch --enforce-container-sigpolicy "ghcr.io/jumpyvi/alchemist:latest"
 ```
+
+# Thanks
+- https://github.com/tuna-os/tunaOS
+- https://github.com/bootcrew
+- https://github.com/ublue-os/bluefin-lts
