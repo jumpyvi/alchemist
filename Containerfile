@@ -95,6 +95,8 @@ RUN dnf config-manager --add-repo=https://negativo17.org/repos/epel-multimedia.r
 
 RUN dnf install -y git cmake make binutils curl wget tmux ddcutil podman distrobox fpaste unzip wireguard-tools fpaste wl-clipboard xdg-terminal-exec xhost
 
+RUN dnf install -y qemu-kvm libvirt virt-install
+
 RUN dnf -y --setopt=install_weak_deps=False install gcc
 
 RUN systemctl enable firewalld.service fwupd.service brew-setup.service systemd-resolved.service gdm.service tailscaled.service uupd.timer && \
@@ -102,7 +104,7 @@ RUN systemctl enable firewalld.service fwupd.service brew-setup.service systemd-
 
 RUN authselect enable-feature with-silent-lastlog
 
-RUN curl -fsSLo /usr/lib/systemd/zram-generator.conf "https://src.fedoraproject.org/rpms/zram-generator/blob/rawhide/f/zram-generator.conf" && \
+RUN curl -fsSLo /usr/lib/systemd/zram-generator.conf "https://src.fedoraproject.org/rpms/zram-generator/raw/rawhide/f/zram-generator.conf" && \
     grep -F -e "zram-size =" /usr/lib/systemd/zram-generator.conf
 
 RUN mkdir -p /etc/flatpak/remotes.d && \
