@@ -106,6 +106,8 @@ RUN systemctl enable firewalld.service fwupd.service brew-setup.service systemd-
 
 RUN authselect enable-feature with-silent-lastlog
 
+RUN sed -i 's|uupd|& --disable-module-distrobox|' /usr/lib/systemd/system/uupd.service
+
 RUN curl -fsSLo /usr/lib/systemd/zram-generator.conf "https://src.fedoraproject.org/rpms/zram-generator/raw/rawhide/f/zram-generator.conf" && \
     grep -F -e "zram-size =" /usr/lib/systemd/zram-generator.conf
 
