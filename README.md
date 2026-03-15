@@ -1,10 +1,10 @@
 # Alchemist
 
-💙 This uses [zirconium-mkosi](https://github.com/tulilirockz/zirconium-mkosi) as a template, thank you!
+💙 This uses [zirconium-mkosi](https://github.com/zirconium-dev/zirconium) bootc profiles and as a template for many things, thank you
 
 # Purpose
 
-Minimalist MkOSI AlmaLinux bootable container with ublue-like utilies
+Minimal and unbranded MkOSI AlmaLinux (Kitten) bootable container with ublue-like core utilies
 
 
 ## Workstation
@@ -14,10 +14,10 @@ Minimalist MkOSI AlmaLinux bootable container with ublue-like utilies
 Mkosi almalinux image
 
 ### Changes:
-- Up to date and minimal gnome-shell
+- Up to date and minimal gnome install (Gnome 50 from TunaOS)
 - Virtualization support
-- Uupd
-- Necessary drivers, codecs and utils
+- Uupd (From ublue)
+- Necessary drivers, codecs and utils (From negativo and Bluefin-LTS)
 - Brew, flathub and gnome-nightly ootb
 
 
