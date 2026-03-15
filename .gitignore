@@ -7,3 +7,6 @@ _build-*/**
 *.output
 *cache
 *.tools
+Alchemist_*
+initrd*
+mkosi.version
