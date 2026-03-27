@@ -1,77 +1,21 @@
+FROM ghcr.io/projectbluefin/common:latest AS bluefin-common
+
 FROM scratch AS ctx
 COPY build_files /
 
 # Base Image
-FROM quay.io/almalinuxorg/almalinux-bootc:10-kitten
+FROM quay.io/fedora/fedora-silverblue:43
 
-RUN dnf install -y python3-dnf-plugin-versionlock dnf-plugins-core 'dnf-command(versionlock)' && \
+COPY --from=bluefin-common /system_files/bluefin/* /etc/
+COPY --from=bluefin-common /system_files/bluefin/* /usr/
+
+RUN dnf install -y dnf5-plugins && \
     dnf -y copr enable ublue-os/packages && \
     dnf -y copr disable ublue-os/packages && \
-    dnf -y install epel-release && dnf -y upgrade && \
-    dnf -y copr enable jreilly1821/c10s-gnome && \
-    dnf -y upgrade glib2 && \
-    dnf versionlock add glib2 && \
-    dnf config-manager --set-enabled --setopt "copr:copr.fedorainfracloud.org:jreilly1821:c10s-gnome.priority=10" && \
     dnf -y --enablerepo copr:copr.fedorainfracloud.org:ublue-os:packages install uupd
 
-RUN dnf group install -y --nobest \
-    -x PackageKit \
-    -x PackageKit-command-not-found \
-    "Common NetworkManager submodules" \
-    "Core" \
-    "Fonts" \
-    "Guest Desktop Agents" \
-    "Hardware Support" \
-    "Printing Client" \
-    "Standard" \
-    "Workstation product core"
+RUN dnf -y remove gnome-software gnome-extensions-app PackageKit PackageKit-command-not-found gnome-software-fedora-langpacks console-login-helper-messages setroubleshoot
 
-RUN dnf -y install \
-    -x gnome-software \
-    -x gnome-extensions-app \
-    -x PackageKit \
-    -x PackageKit-command-not-found \
-    -x gnome-software-fedora-langpacks \
-    "NetworkManager-adsl" \
-    "glib2" \
-    "gdm" \
-    "gnome-bluetooth" \
-    "gnome-color-manager" \
-    "gnome-control-center" \
-    "gnome-initial-setup" \
-    "gnome-remote-desktop" \
-    "gnome-session-wayland-session" \
-    "gnome-settings-daemon" \
-    "gnome-shell" \
-    "gnome-user-docs" \
-    "gvfs-fuse" \
-    "gvfs-goa" \
-    "gvfs-gphoto2" \
-    "gvfs-mtp" \
-    "gvfs-smb" \
-    "libsane-hpaio" \
-    "nautilus" \
-    "orca" \
-    "ptyxis" \
-    "xdg-desktop-portal-gnome" \
-    "xdg-user-dirs-gtk" \
-    "yelp-tools" \
-    "plymouth" \
-    "plymouth-system-theme" \
-    "fwupd" \
-    "systemd-resolved" \
-    "systemd-container" \
-    "systemd-oomd" \
-    "libcamera-v4l2" \
-    "libcamera-gstreamer" \
-    "libcamera-tools" \
-    "system-reinstall-bootc" \
-    "gnome-disk-utility" \
-    "tuned-ppd"
-
-RUN dnf -y remove console-login-helper-messages setroubleshoot
-
-RUN dnf -y install almalinux-backgrounds almalinux-logos
 
 RUN dnf -y --setopt=install_weak_deps=False install gcc
 COPY --from=ghcr.io/ublue-os/brew:latest /system_files /
@@ -82,18 +26,12 @@ RUN --mount=type=cache,dst=/var/cache \
     /usr/bin/systemctl preset brew-update.timer && \
     /usr/bin/systemctl preset brew-upgrade.timer
 
-RUN dnf config-manager --add-repo "https://pkgs.tailscale.com/stable/rhel/10/tailscale.repo" && \
-    dnf config-manager --set-disabled "tailscale-stable" && \
-    dnf -y --enablerepo "tailscale-stable" install tailscale
-
-RUN dnf config-manager --add-repo=https://negativo17.org/repos/epel-multimedia.repo && \
-    dnf config-manager --set-disabled epel-multimedia && \
-    dnf -y install --enablerepo=epel-multimedia ffmpeg libavcodec @multimedia gstreamer1-plugins-{bad-free,bad-free-libs,good,base} lame{,-libs} && \
+RUN dnf config-manager addrepo --from-repofile=https://negativo17.org/repos/fedora-multimedia.repo && \
+    dnf -y install --enablerepo=fedora-multimedia ffmpeg libavcodec @multimedia gstreamer1-plugins-{bad-free,bad-free-libs,good,base} lame{,-libs} && \
     dnf -y install cups sane-backends-drivers-scanners hplip && \
-    dnf -y install firewalld firewall-config && \
     dnf -y install ntfs-3g xfsprogs btrfs-progs gvfs-mtp gvfs-smb open-vm-tools-desktop zram-generator
 
-RUN dnf install -y git cmake make binutils curl wget tmux ddcutil podman distrobox fpaste unzip wireguard-tools fpaste wl-clipboard xdg-terminal-exec xhost
+RUN dnf install -y git cmake make binutils curl wget tmux ddcutil podman distrobox fpaste unzip tailscale wireguard-tools fpaste wl-clipboard xdg-terminal-exec xhost
 
 RUN dnf install -y evolution evolution-ews
 
@@ -108,12 +46,8 @@ RUN authselect enable-feature with-silent-lastlog
 
 RUN sed -i 's|uupd|& --disable-module-distrobox|' /usr/lib/systemd/system/uupd.service
 
-RUN curl -fsSLo /usr/lib/systemd/zram-generator.conf "https://src.fedoraproject.org/rpms/zram-generator/raw/rawhide/f/zram-generator.conf" && \
-    grep -F -e "zram-size =" /usr/lib/systemd/zram-generator.conf
-
 RUN mkdir -p /etc/flatpak/remotes.d && \
-     curl --retry 3 -o /etc/flatpak/remotes.d/flathub.flatpakrepo "https://dl.flathub.org/repo/flathub.flatpakrepo" && \
-     curl --retry 3 -o /etc/flatpak/remotes.d/gnome-nightly.flatpakrepo "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
+     curl --retry 3 -o /etc/flatpak/remotes.d/flathub.flatpakrepo "https://dl.flathub.org/repo/flathub.flatpakrepo"
 
 RUN rm -rf /var/cache/
     
