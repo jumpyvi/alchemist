@@ -7,7 +7,6 @@ COPY build_files /
 FROM quay.io/fedora/fedora-silverblue:43
 
 COPY --from=bluefin-common /system_files/bluefin/* /etc/
-COPY --from=bluefin-common /system_files/bluefin/* /usr/
 
 RUN dnf install -y dnf5-plugins && \
     dnf -y copr enable ublue-os/packages && \
@@ -38,6 +37,12 @@ RUN dnf install -y evolution evolution-ews
 RUN dnf install -y qemu-kvm libvirt virt-install
 
 RUN dnf -y --setopt=install_weak_deps=False install gcc
+
+RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
+    --mount=type=cache,dst=/var/cache \
+    --mount=type=cache,dst=/var/log \
+    --mount=type=tmpfs,dst=/tmp \
+    /ctx/build.sh
 
 RUN systemctl enable firewalld.service fwupd.service brew-setup.service systemd-resolved.service gdm.service tailscaled.service uupd.timer && \
     systemctl disable rpm-ostree.service mcelog.service
