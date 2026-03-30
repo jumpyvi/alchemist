@@ -6,7 +6,8 @@ COPY build_files /
 # Base Image
 FROM quay.io/fedora/fedora-silverblue:43
 
-COPY --from=bluefin-common /system_files/bluefin/* /etc/
+COPY --from=bluefin-common /system_files/shared/etc/* /etc/
+COPY --from=bluefin-common /system_files/shared/usr/* /usr/
 
 RUN dnf install -y dnf5-plugins && \
     dnf -y copr enable ublue-os/packages && \
