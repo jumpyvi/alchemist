@@ -4,7 +4,7 @@ FROM scratch AS ctx
 COPY build_files /
 
 # Base Image
-FROM quay.io/fedora/fedora-silverblue:43
+FROM quay.io/fedora/fedora-silverblue:44
 
 COPY --from=bluefin-common /system_files/shared/etc/* /etc/
 COPY --from=bluefin-common /system_files/shared/usr/* /usr/
@@ -46,7 +46,7 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     /ctx/build.sh
 
 RUN systemctl enable firewalld.service fwupd.service brew-setup.service systemd-resolved.service gdm.service tailscaled.service uupd.timer && \
-    systemctl disable rpm-ostree.service mcelog.service
+    systemctl disable mcelog.service
 
 RUN authselect enable-feature with-silent-lastlog
 

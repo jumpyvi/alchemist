@@ -1,4 +1,4 @@
-image_name := env("BUILD_IMAGE_NAME", "alma-bootc")
+image_name := env("BUILD_IMAGE_NAME", "alchemist-bootc")
 image_tag := env("BUILD_IMAGE_TAG", "latest")
 base_dir := env("BUILD_BASE_DIR", ".")
 filesystem := env("BUILD_FILESYSTEM", "xfs")

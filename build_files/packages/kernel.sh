@@ -1,8 +1,8 @@
 #!/usr/bin/bash
 set -eoux pipefail
 
-# Adds the kwizart longterm 6.12 kernel repo
-dnf5 copr enable -y kwizart/kernel-longterm-6.12
+# Adds the kwizart longterm 6.18 kernel repo
+dnf5 copr enable -y kwizart/kernel-longterm-6.18
 
 # Remove existing kernels to prevent conflicts
 readarray -t OLD_KERNELS < <(rpm -qa 'kernel-*' | grep -v 'kernel-longterm')
@@ -15,7 +15,7 @@ fi
 
 # Install kwizart kernel packages
 dnf5 install -y \
-    --enablerepo="copr:copr.fedorainfracloud.org:kwizart:kernel-longterm-6.12" \
+    --enablerepo="copr:copr.fedorainfracloud.org:kwizart:kernel-longterm-6.18" \
     --allowerasing \
     --setopt=tsflags=noscripts \
     kernel-longterm \
