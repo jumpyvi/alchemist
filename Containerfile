@@ -1,3 +1,6 @@
+FROM scratch AS ctx
+COPY build_files /
+
 # Base Image
 FROM ghcr.io/ublue-os/aurora-dx:beta
 
@@ -8,7 +11,6 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,dst=/var/log \
     --mount=type=tmpfs,dst=/tmp \
     /ctx/build.sh
-
 
 RUN rm -rf /var/cache/
     
