@@ -4,7 +4,7 @@ COPY build_files /
 # Base Image
 FROM ghcr.io/ublue-os/aurora-dx:beta
 
-RUN dnf install -y ksshaskpass qt ntfs-3g xfsprogs btrfs-progs git cmake make binutils curl wget tmux fpaste unzip tailscale wireguard-tools fpaste wl-clipboard xdg-terminal-exec xhost
+RUN dnf install -y ksshaskpass qt gnome-disks ntfs-3g xfsprogs btrfs-progs git cmake make binutils curl wget tmux fpaste unzip tailscale wireguard-tools fpaste wl-clipboard xdg-terminal-exec xhost
 
 RUN dnf config-manager addrepo --from-repofile=https://download.opensuse.org/repositories/home:paulmcauley/Fedora_Rawhide/home:paulmcauley.repo && \
     dnf -y install klassy
