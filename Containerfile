@@ -2,7 +2,7 @@ FROM scratch AS ctx
 COPY build_files /
 
 # Base Image
-FROM ghcr.io/ublue-os/aurora-dx:beta
+FROM ghcr.io/ublue-os/aurora:beta
 
 RUN dnf install -y ksshaskpass qt gnome-disks ntfs-3g xfsprogs btrfs-progs git cmake make binutils curl wget tmux fpaste unzip tailscale wireguard-tools fpaste wl-clipboard xdg-terminal-exec xhost
 
