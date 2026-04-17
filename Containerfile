@@ -9,6 +9,8 @@ RUN dnf install -y korganizer kdepim-addons ksshaskpass qt gnome-disks ntfs-3g x
 RUN dnf config-manager addrepo --from-repofile=https://download.opensuse.org/repositories/home:paulmcauley/Fedora_Rawhide/home:paulmcauley.repo && \
     dnf -y install klassy
 
+RUN dnf remove -y sunshine code kwrite
+
 RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
