@@ -6,7 +6,7 @@ FROM ghcr.io/ublue-os/aurora:beta
 
 RUN dnf install -y ntfs-3g xfsprogs btrfs-progs git cmake make binutils curl wget tmux fpaste unzip tailscale wireguard-tools fpaste wl-clipboard xdg-terminal-exec xhost
 
-RUN dnf config-manager addrepo --from-repofile=https://download.opensuse.org/repositories/home:paulmcauley/Fedora_Rawhide/home:paulmcauley.repo && \
+RUN dnf copr enable hazel-bunny/ricing && \
     dnf -y install klassy
 
 RUN dnf remove -y sunshine code kwrite
