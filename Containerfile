@@ -8,6 +8,8 @@ RUN dnf install -y xfsprogs make yaru-theme papirus-icon-theme
 
 RUN dnf -y remove "gnome-shell-extension*" --setopt=clean_requirements_on_remove=False
 
+RUN dnf -y remove gnome-shell-extension-dash-to-dock gnome-shell-extension-appindicator gnome-shell-extension-logo-menu gnome-shell-extension-caffeine 
+
 RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
