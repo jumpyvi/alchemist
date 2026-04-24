@@ -4,7 +4,7 @@ COPY build_files /
 # Base Image
 FROM ghcr.io/ublue-os/bluefin:beta
 
-RUN dnf install -y xfsprogs make
+RUN dnf install -y xfsprogs make yaru-theme papirus-icon-theme 
 
 RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,dst=/var/cache \
