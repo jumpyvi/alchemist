@@ -2,14 +2,9 @@ FROM scratch AS ctx
 COPY build_files /
 
 # Base Image
-FROM ghcr.io/ublue-os/aurora:beta
+FROM ghcr.io/ublue-os/bluefin:beta
 
-RUN dnf install -y xfsprogs git cmake make korganizer kdepim-addons ksshaskpass qt gnome-disks xdg-terminal-exec xhost
-
-RUN dnf copr enable -y hazel-bunny/ricing && \
-    dnf -y install klassy
-
-RUN dnf remove -y sunshine code kwrite
+RUN dnf install -y xfsprogs make
 
 RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,dst=/var/cache \
