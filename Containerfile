@@ -6,9 +6,7 @@ FROM ghcr.io/ublue-os/bluefin:beta
 
 RUN dnf install -y xfsprogs make yaru-theme papirus-icon-theme 
 
-RUN dnf -y remove "gnome-shell-extension*" --setopt=clean_requirements_on_remove=False
-
-RUN dnf -y remove gnome-shell-extension-blur-my-shell gnome-shell-extension-dash-to-dock gnome-shell-extension-appindicator gnome-shell-extension-logo-menu gnome-shell-extension-caffeine 
+RUN rm -rf /usr/share/gnome-shell/extensions/*
 
 RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,dst=/var/cache \
