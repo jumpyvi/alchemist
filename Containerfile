@@ -2,7 +2,7 @@ FROM scratch AS ctx
 COPY build_files /
 
 # Base Image
-FROM ghcr.io/ublue-os/bluefin:beta
+FROM ghcr.io/ublue-os/bluefin:stable
 
 RUN dnf install -y xfsprogs make papirus-icon-theme 
 
