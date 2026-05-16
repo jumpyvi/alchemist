@@ -2,7 +2,7 @@ FROM scratch AS ctx
 COPY build_files /
 
 # Base Image
-FROM ghcr.io/ublue-os/aurora:stable
+FROM ghcr.io/ublue-os/aurora-dx:stable
 
 RUN dnf install -y xfsprogs make papirus-icon-theme git cmake make korganizer kdepim-addons ksshaskpass qt gnome-disks xdg-terminal-exec xhost
 
