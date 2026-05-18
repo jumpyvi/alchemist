@@ -5,6 +5,7 @@ COPY build_files /
 FROM ghcr.io/ublue-os/aurora-dx:stable
 
 RUN dnf install -y xfsprogs make papirus-icon-theme git cmake make korganizer kdepim-addons ksshaskpass qt gnome-disks xdg-terminal-exec xhost
+RUN dnf remove -y sunshine
 
 RUN dnf config-manager -y addrepo --from-repofile=https://download.opensuse.org/repositories/home:paulmcauley/Fedora_44/home:paulmcauley.repo
 RUN dnf install klassy -y
